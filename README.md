@@ -27,7 +27,7 @@ Run the program from the command line with the following syntax:
 - **`<btBackupPath>`**: The path to the qBittorrent `BT_backup` directory containing `.fastresume` files.  
   *Example*: `"C:\Users\Work\Downloads\qBittorrent\BT_backup"`
 
-- **`<existingPath>`**: The current save path in the `.fastresume` files that you want to replace. Must match exactly, followed by a separator (`/` or `\`) or the end of the path.  
+- **`<existingPath>`**: The current relative save path in the `.fastresume` files that you want to replace. Must match exactly, followed by a separator (`/` or `\`) or the end of the path.  
   *Example*: `"E:\Download"`
 
 - **`<newPath>`**: The new save path to replace the existing one with.  
@@ -41,5 +41,9 @@ Run the program from the command line with the following syntax:
 ### Examples
 
 1. **Replace a Windows path with a Linux path**:
+   Torrent path
+   `E:\Download\Video` result path `/downloads/ad_content/Video`
+   
    ```bash
    qbtPathReplace "C:\Users\Work\Downloads\qBittorrent\BT_backup" "E:\Download" "/downloads/ad_content" true
+
