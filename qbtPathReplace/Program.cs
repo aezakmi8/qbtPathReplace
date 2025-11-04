@@ -71,7 +71,17 @@ internal class Program
 
                 updated = true;
             }
-
+            
+            if (bDict.TryGetValue("mapped_files", out var mappedFilesObj) && mappedFilesObj is BList mappedFiles)
+            {
+                if (NormalizeMappedFiles(mappedFiles, targetPathLinux))
+                {
+                    bDict["mapped_files"] = mappedFiles;
+                    
+                    updated = true;
+                }
+            }
+            
             if (!updated) return false;
 
             Console.WriteLine(
@@ -127,5 +137,28 @@ internal class Program
         var separator = targetPathLinux ? '/' : '\\';
         var altSeparator = targetPathLinux ? '\\' : '/';
         return path.Replace(altSeparator, separator);
+    }
+    
+    private static bool NormalizeMappedFiles(BList mappedFiles, bool targetPathLinux)
+    {
+        var changed = false;
+
+        for (int i = 0; i < mappedFiles.Count; i++)
+        {
+            if (mappedFiles[i] is BString entry)
+            {
+                var newEntry = targetPathLinux
+                    ? entry.ToString().Replace('\\', '/')
+                    : entry.ToString().Replace('/', '\\');
+
+                if (newEntry != entry.ToString())
+                {
+                    mappedFiles[i] = new BString(newEntry);
+                    changed = true;
+                }
+            }
+        }
+
+        return changed;
     }
 }
